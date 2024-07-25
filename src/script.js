@@ -22,7 +22,33 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { HDRJPGLoader } from '@monogrid/gainmap-js';
+import Supercluster from "supercluster";
 
+// Load Data
+const now = Date.now();
+
+let projects;
+
+getJSON('./places2.json', (geojson) => {
+    console.log(`loaded ${geojson.features.length} points JSON in ${(Date.now() - now) / 1000}s`);
+
+    projects = new Supercluster({
+        log: true,
+        radius: 100,
+        extent: 256,
+        maxZoom: 17
+    }).load(geojson.features);
+
+    // console.log(projects.getClusters([-180, -90, 180, 90], 14)); //For the given bbox array ([westLng, southLat, eastLng, northLat]) and integer zoom
+    // // console.log(index)
+    // console.log(projects.getClusters([-180, -90, 180, 90], 14)[0]["geometry"]["coordinates"])
+    postMessage({ready: true});
+});
+
+let ufosData = {}
+let zoomLevels = [0, 1, 2, 3, 4, 5, 6, 7]
+
+// Set 3D Scene
 let scene = new Scene();
 
 let camera = new PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 1000);
@@ -42,14 +68,14 @@ let pointer = new Vector2();
 let raycaster = new Raycaster();
 raycaster.far = 50;
 
-// Bounding Box (Hit Box)
-let ufosData = [];
 
 // Controls
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 0, 0);
 controls.dampingFactor = 0.05;
 controls.enableDamping = true;
+controls.minDistance = 10;
+controls.maxDistance = 52.3;
 
 // Load, Model, Animate
 (async function () {
@@ -122,38 +148,15 @@ controls.enableDamping = true;
     scene.add(ocean);
  
 
-    // UFO
+    // Load UFO
     let ufo = ( await new GLTFLoader().setDRACOLoader(dLoader).loadAsync('./element-5-draco.glb')).scene.children[0];
 
-    ufosData = [
-      // North => Plus South => Minus East => Plus West => Minus
-      makeUFO(ufo, scene, 3, 0.0405, -51.0561), // Brazil 1
-      makeUFO(ufo, scene, 2, -2.5307, -44.2989), // Brazil 2
-      makeUFO(ufo, scene, 3, 30.8406, -115.2838), // Baja California
-      makeUFO(ufo, scene, 2, 31.6904, -106.4245), // North America 1
-      makeUFO(ufo, scene, 3, 39.1031, -84.512), // North America 2
-      makeUFO(ufo, scene, 3, 64.961, -21.9408), // North America
-      makeUFO(ufo, scene, 3, 51.3755, -4.1427), // UK
-      makeUFO(ufo, scene, 3, 41.6488, -0.8891), // Spain 1,
-      makeUFO(ufo, scene, 3, 37.3891, -5.9845), // Spain 2
-      makeUFO(ufo, scene, 2, 41.3275, 19.8187 ), // Albania
-      makeUFO(ufo, scene, 3, 50.4504, 30.5245 ), // Ukraine
-      makeUFO(ufo, scene, 2, 41.0082, 28.9784 ), // Turkey1
-      makeUFO(ufo, scene, 1, 39.9334, 32.8597 ), // Turkey2
-      makeUFO(ufo, scene, 3, 31.0461, 34.8516 ), // Israel
-      makeUFO(ufo, scene, 3, 21.5292, 39.1611 ), // Saudi Arabia 1
-      makeUFO(ufo, scene, 2, 26.0667, 50.5577 ), // Bahrain
-      makeUFO(ufo, scene, 3, 14.4974, -14.4524 ), // Snegal
-      makeUFO(ufo, scene, 2, 9.082, 8.6753 ), // Nigeria
-      makeUFO(ufo, scene, 3, -30.5595, 22.9375 ), // South Africa
-      makeUFO(ufo, scene, 1, -22.3285, 24.6849), // Botswana
-      makeUFO(ufo, scene, 3, 28.6139 , 77.2088 ), // India 1
-      makeUFO(ufo, scene, 1, 21.1458, 79.0882 ), // India 2
-      makeUFO(ufo, scene, 3, 12.2529, 109.1899), // Vietnam
-      makeUFO(ufo, scene, 2, 24.8104, 113.5972 ), // Shaoguan China
-      makeUFO(ufo, scene, 3, 39.9042, 116.4074 ), // Haidian, Beijing, China
-    ]
-
+    zoomLevels.forEach( (level) =>{
+      ufosData[level] = []
+      projects.getClusters([-180, -90, 180, 90], level).forEach((index) =>{
+        ufosData[level].push(makeUFO(ufo, scene, 3, index["geometry"]['coordinates'][0], index["geometry"]['coordinates'][1]))
+      })
+    })
 
     // Resize
     window.addEventListener( 'resize', resizeWindow );
@@ -164,29 +167,109 @@ controls.enableDamping = true;
     // Animation
     let clock = new Clock();
 
+    let prevZoom = 0;
+
+    ufosData[prevZoom].forEach( (ufoData) => {
+      let ufo = ufoData.group;
+
+      // scene.add(ufo)
+      ufo.visible = true
+      // let ufo = ufoData.group;
+
+      ufo.position.set(0, 0, 0);
+      ufo.rotation.set(0, 0, 0);
+      ufo.updateMatrixWorld();
+      ufo.scale.set(5*52*0.1/50, 2*52*0.1/50, 5*52*0.1/50)
+
+      // ufoData.lngRot += delta * 0.03;
+      ufo.rotateOnAxis(new Vector3(0, 0, 1), ufoData.latRot); // Latitude Rotation
+      ufo.rotateOnWorldAxis(new Vector3(0, 1, 0), ufoData.lngRot); // Longtitude Rotation
+      ufo.rotateOnAxis(new Vector3(0, 1, 0), -20*ufoData.lngRot); // ufo rotation
+      ufo.translateY(ufoData.yOff);
+
+      ufoData.box.setFromObject(ufo);
+    });
+
+    let deltaLngRot = 0
+
+    // Animation Loop
     renderer.setAnimationLoop(() => {
 
       let delta = clock.getDelta();
 
-      // Earth Animation
-      continent.rotation.y += delta * 0.03;
+      let distance = camera.position.distanceTo( controls.target );
 
-      // UFO Animation
-      ufosData.forEach((ufoData) => {
+      var currentZoom = Math.abs(Math.round(-0.2 * distance + 10))
+      if (currentZoom > 7) currentZoom = 7
+      console.log(currentZoom)
+      
+      deltaLngRot += delta * 0.03;
+
+      // continent.rotation.y = deltaLngRot;
+
+      if (currentZoom === prevZoom && ufosData[currentZoom] ) {
+
+          ufosData[currentZoom].forEach( (ufoData) => {
+          let ufo = ufoData.group;
+    
+          // let ufo = ufoData.group;
+
+          ufo.position.set(0, 0, 0);
+          ufo.rotation.set(0, 0, 0);
+          ufo.updateMatrixWorld();
+          const size = (18 - currentZoom) * 0.6
+          ufo.scale.set(size*distance*0.1/50, size*distance*0.1/50, size*distance*0.1/50)
+
+          // ufoData.lngRot += delta * 0.03;
+          ufo.rotateOnAxis(new Vector3(0, 0, 1), ufoData.latRot); // Latitude Rotation
+          ufo.rotateOnWorldAxis(new Vector3(0, 1, 0), ufoData.lngRot); // Longtitude Rotation
+          ufo.rotateOnAxis(new Vector3(0, 1, 0), -20*(ufoData.lngRot)); // ufo rotation
+          ufo.translateY(ufoData.yOff);
+
+          ufoData.box.setFromObject(ufo);
+          });
+      }
+
+      if (currentZoom != prevZoom && ufosData[currentZoom] ) {
+       
+        ufosData[prevZoom].forEach( (ufoData) => {
+          let prevUfo = ufoData.group;
+          // console.log(prevUfo)
+          // scene.remove(prevUfo)
+          prevUfo.visible = false
+          console.log(prevUfo.visible)
+        });
+
+        ufosData[currentZoom].forEach( (ufoData) => {
         let ufo = ufoData.group;
+        ufo.visible = true
+        // console.log(ufoData)
+        // console.log(key)
+        // console.log (unvisibleData)
+        // scene.add(u
+        // console.log(visibleData)
+  
+        // let ufo = ufoData.group;
 
         ufo.position.set(0, 0, 0);
         ufo.rotation.set(0, 0, 0);
         ufo.updateMatrixWorld();
 
-        ufoData.lngRot += delta * 0.03;
-        ufo.rotateOnAxis(new Vector3(0, 0, 1), ufoData.latRot); // Latitude Rotation
-        ufo.rotateOnWorldAxis(new Vector3(0, 1, 0), ufoData.lngRot); // Longtitude Rotation
-        ufo.rotateOnAxis(new Vector3(0, 1, 0), -20*ufoData.lngRot); // ufo rotation
+        const size = (18 - currentZoom) * 0.6
+        ufo.scale.set(size*distance*0.1/50, size*distance*0.1/50, size*distance*0.1/50)
+
+        // ufoData.lngRot += delta * 0.03;
+        ufo.rotateOnAxis(new Vector3(0, 0, 1), ufoData.latRot+deltaLngRot); // Latitude Rotation
+        ufo.rotateOnWorldAxis(new Vector3(0, 1, 0), ufoData.lngRot+deltaLngRot); // Longtitude Rotation
+        ufo.rotateOnAxis(new Vector3(0, 1, 0), -20*ufoData.lngRot+deltaLngRot); // ufo rotation
         ufo.translateY(ufoData.yOff);
 
         ufoData.box.setFromObject(ufo);
-      });
+        });
+      }
+
+      prevZoom = currentZoom
+
 
       controls.update();
       renderer.render(scene, camera);
@@ -197,6 +280,20 @@ controls.enableDamping = true;
 }
 })();
 
+function getJSON(url, callback) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.responseType = 'json';
+  xhr.setRequestHeader('Accept', 'application/json');
+  xhr.onload = function () {
+      if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300 && xhr.response) {
+          callback(xhr.response);
+      }
+  };
+  xhr.send();
+}
+
+
 function makeUFO(ufoMesh, scene, size, lat, lng) {
   // ufoMesh: the Mesh of ufo
   // Scene: Instance of THREE.scene()
@@ -206,13 +303,14 @@ function makeUFO(ufoMesh, scene, size, lat, lng) {
 
   // There are 3 sizes: 3, 2, 1
   let ufo = ufoMesh.clone();
-  if (size == 3) {
-    ufo.scale.set(5, 2, 5);
-  } else if (size == 2){
-    ufo.scale.set(3, 2, 3);
-  } else if (size == 1){
-    ufo.scale.set(1.8, 2, 1.8);
-  } else console.log(`Undifined size of UFO for location {Latitude: ${lat}, longitude: ${lng}`)
+  // if (size == 3) {
+  //   ufo.scale.set(5, 2, 5);
+  // } else if (size == 2){
+  //   ufo.scale.set(3, 2, 3);
+  // } else if (size == 1){
+  //   ufo.scale.set(1.8, 2, 1.8);
+  // } else console.log(`Undifined size of UFO for location {Latitude: ${lat}, longitude: ${lng}`)
+  ufo.scale.set(5, 2, 5)
   
   ufo.position.set(0,0,0);
   ufo.rotation.set(0,0,0);
@@ -238,21 +336,23 @@ function makeUFO(ufoMesh, scene, size, lat, lng) {
 
   let group = new Group();
   group.add(ufo);
+  group.visible = false
   scene.add(group);
 
   // Bounding Hit Box
   let box = new Box3().setFromObject(ufo);
   
-  // Debug Use ot see Hit Box
-  const helper = new Box3Helper( box, 0xffff00 );
-  scene.add(helper)
+  // Debug yse to see Hit Box
+  // const helper = new Box3Helper( box, 0xffff00 );
+  // scene.add(helper)
 
   return {
     group,
     box,
     rot: 0,
     rad: Math.random() * Math.PI * 0.45 + 0.5,
-    yOff: 10.3 + Math.random() * 0.5,
+    // yOff: 10.3,
+    yOff: 10.3 + Math.random() * 0.2,
     latRot: -lat / 90 * Math.PI/2 + Math.PI/2,
     lngRot: Math.PI * lng / 180 + Math.PI / 3 + 0.2 ,
   };
@@ -271,6 +371,7 @@ function resizeWindow() {
   renderer.setSize( innerWidth, innerHeight );
 
 }
+
 
 function onPointerMove(event) {
   // console.log(ufosData)
@@ -302,21 +403,24 @@ function onPointerMove(event) {
   //   }
   // }
   
-  for (let ufoData of ufosData) {
-    let intersectionPoint = new Vector3(); // Create a new Vector3 to store the intersection point
-    if (raycaster.ray.intersectBox(ufoData.box, intersectionPoint) !== null) {
-      // Calculate the distance from the camera to the intersection point
-      let distance = intersectionPoint.distanceTo(camera.position);
-      if (distance <= raycaster.far) {
-        console.log('Intersection detected with UFO at', intersectionPoint, 'at distance', distance);
-        // Change color of the UFO
-        ufoData.group.traverse((object) => {
-          if (object.isMesh) {
-            object.material.color.set(0xff0000); // Set to red or any other color
-          }
-        });
+  // for (let ufoData of ufosData) {//
+  for (var key in ufosData) {
+    ufosData[key].forEach((ufoData) => {
+      let intersectionPoint = new Vector3(); // Create a new Vector3 to store the intersection point
+      if (raycaster.ray.intersectBox(ufoData.box, intersectionPoint) !== null) {
+        // Calculate the distance from the camera to the intersection point
+        let distance = intersectionPoint.distanceTo(camera.position);
+        if (distance <= raycaster.far) {
+          console.log('Intersection detected with UFO at', intersectionPoint, 'at distance', distance);
+          // Change color of the UFO
+          ufoData.group.traverse((object) => {
+            if (object.isMesh) {
+              object.material.color.set(0xff0000); // Set to red or any other color
+            }
+          });
+        }
       }
-    }
+    })
   }
 
 }

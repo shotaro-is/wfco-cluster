@@ -1,0 +1,528 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Iceland 1",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": 64.961,
+          "long_x": -21.9408,
+          "region": "Iceland",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [64.961, -21.9408]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Iceland 2",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": 65.41496616,
+          "long_x": -24.66074384,
+          "region": "Iceland",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [65.41496616,	-24.66074384]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Iceland 3",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": 65.74537269,
+          "long_x": -21.04462506,
+          "region": "Iceland",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [65.74537269,	-21.04462506]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Iceland 4",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": 66.36751264,
+          "long_x": -21.80066211,
+          "region": "Iceland",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [66.36751264,	-21.80066211]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Iceland 5",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": 65.79378191,
+          "long_x": -19.0991112,
+          "region": "Iceland",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [65.79378191,	-19.0991112]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Brazil 1",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": 0.0405,
+          "long_x": -51.0561,
+          "region": "South America",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.0405, -51.0561]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Brazil 2",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": -2.5307,
+          "long_x": -44.2989,
+          "region": "South America",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-2.5307, -44.2989]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Baja California",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": 30.8406,
+          "long_x":  -115.2838,
+          "region": "North America",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [30.8406, -115.2838]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "USA 1",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "North America",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [31.6904, -106.424]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "USA 2",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "North America",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [39.1031, -84.512]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "USA 3",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "North America",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [64.961, -21.9408]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "UK",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "EU",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [51.3755, -4.1427]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "SPAIN 1",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "EU",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [41.6488, -0.8891]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "SPAIN 2",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "EU",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [37.3891, -5.9845]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Albania",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "EU",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [41.3275, 19.8187 ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Ukraine",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "EU",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [50.4504, 30.5245]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Turkey 1",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "EU",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [41.0082, 28.9784]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Turkey 2",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "EU",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [39.9334, 32.8597 ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Israel",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "Asia",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [31.0461, 34.8516]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Bahrain",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "Asia",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [26.0667, 50.5577]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Senegal",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "Africa",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [14.4974, -14.4524 ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Nigeria",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "Africa",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [9.082, 8.6753]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "South Africa",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "Africa",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-30.5595, 22.9375]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Botsuwana",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "Africa",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-22.3285, 24.6849]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "India 1",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "Asia",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [28.6139 , 77.2088]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "India 2",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "Asia",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [21.1458, 79.0882]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "Vietnam",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "Asia",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [12.2529, 109.1899]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "China 1",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "Asia",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [24.8104, 113.5972]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "scalerank": 2,
+          "name": "China 2",
+          "comment": null,
+          "name_alt": null,
+          "lat_y": null,
+          "long_x":  null,
+          "region": "Asia",
+          "subregion": null,
+          "featureclass": "test location"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [39.9042, 116.4074 ]
+        }
+      }
+    ]
+  }
+  
