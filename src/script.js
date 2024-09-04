@@ -47,10 +47,11 @@ getJSON('./places2.json', (geojson) => {
 
 let ufosData = {}
 let zoomLevels = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+const ZOOM_LEVELS = [2, 4, 8];
 // let zoomLevels = [17]
 
 // Animation Variables
-const TRANSITION_DURATION = 1.5; // seconds
+const TRANSITION_DURATION = 1; // seconds
 let transitionStartTime = 0;
 
 
@@ -155,7 +156,7 @@ controls.maxDistance = 52.3;
  
 
     // Load UFO
-    let ufo = ( await new GLTFLoader().setDRACOLoader(dLoader).loadAsync('./element-5-draco.glb')).scene.children[0];
+    let ufo = ( await new GLTFLoader().setDRACOLoader(dLoader).loadAsync('./flower_petal_1_draco.glb')).scene.children[0];
 
     zoomLevels.forEach( (level) =>{
       ufosData[level] = []
@@ -182,7 +183,7 @@ controls.maxDistance = 52.3;
         ufo.rotation.set(0, 0, 0);
         ufo.updateMatrixWorld();
   
-        const size = (18 - parseInt(zoom)) * 0.6;
+        const size = (18 - parseInt(zoom)) * 0.8;
         ufo.scale.set(size * 52 * 0.1 / 50, size * 52 * 0.1 / 50, size * 52 * 0.1 / 50);
   
         ufo.rotateOnAxis(new Vector3(0, 0, 1), ufoData.latRot);
@@ -196,9 +197,12 @@ controls.maxDistance = 52.3;
     }
 
     // Set initial visibility for the starting zoom level
-    let initialZoom = Math.abs(Math.round(-0.2 * camera.position.distanceTo(controls.target) + 10));
-    if (initialZoom < 2) initialZoom = 2;
-    if (initialZoom > 8 ) initialZoom = 8;
+    // let initialZoom = Math.abs(Math.round(-0.2 * camera.position.distanceTo(controls.target) + 10));
+    // if (initialZoom < 2) initialZoom = 2;
+    // if (initialZoom > 8 ) initialZoom = 8;
+
+    let initialDistance = camera.position.distanceTo(controls.target);
+    let initialZoom = ZOOM_LEVELS[Math.min(2, Math.floor(50 / initialDistance))];
 
     ufosData[initialZoom].forEach(ufoData => ufoData.group.visible = true);
 
@@ -210,10 +214,11 @@ controls.maxDistance = 52.3;
       let delta = clock.getDelta();
       let distance = camera.position.distanceTo(controls.target);
     
-      var currentZoom = Math.abs(Math.round(-0.2 * distance + 10));
-      if (currentZoom < 2) currentZoom = 2;
-      if (initialZoom > 8 ) initialZoom = 8;
-      console.log(currentZoom);
+      // var currentZoom = Math.abs(Math.round(-0.2 * distance + 10));
+      // if (currentZoom < 2) currentZoom = 2;
+      // if (initialZoom > 8 ) initialZoom = 8;
+      let currentZoom = ZOOM_LEVELS[Math.min(2, Math.floor(50 / distance))]; 
+      console.log(currentZoom, distance);
     
       // Check if zoom level has changed
       if (currentZoom !== prevZoom) {
@@ -238,13 +243,12 @@ controls.maxDistance = 52.3;
           const targetSize = (18 - parseInt(zoom)) * 0.6;
           const targetScale = targetSize * distance * 0.1 / 50;
     
-          // Smoothly transition scale
+          // Set scale directly without animation
           if (zoom == currentZoom) {
-            ufo.scale.lerp(new Vector3(targetScale, targetScale, targetScale), easeProgress);
-          } else if (zoom == prevZoom) {
-            ufo.scale.lerp(new Vector3(0, 0, 0), easeProgress);
+            ufo.scale.set(targetScale, targetScale, targetScale);
+          } else {
+            ufo.scale.set(0, 0, 0);
           }
-    
           // Apply rotations
           ufo.rotateOnAxis(new Vector3(0, 0, 1), ufoData.latRot);
           ufo.rotateOnWorldAxis(new Vector3(0, 1, 0), ufoData.lngRot + deltaLngRot);
